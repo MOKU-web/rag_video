@@ -1,0 +1,160 @@
+=== [Slide 1] 投影片文字與圖表提取 ===
+
+--- 【文字與表格內容】 ---
+資訊管理學系 陳士傑老師
+
+作業系統
+
+Operating Systems 電腦系統結構
+==================================================
+
+=== [Slide 2] 投影片文字與圖表提取 ===
+
+--- 【文字與表格內容】 ---
+## 本章重點
+
+## CPU與I/0的運作方式
+
+## 硬體資源的保護(Hardware Resource Protection)
+
+9基礎設施 (前題):雙模式運作 (Dual Mode)、特權指令(Privileged Instructions)
+
+中I/0保護 (I/0 Protection)
+
+記憶體保護 (Memory Protection)
+
+中CPU保護 (CPU Protection)
+
+Interrupt處理程序、種類
+
+Interrupt vs. Trap
+==================================================
+
+=== [Slide 3] 投影片文字與圖表提取 ===
+
+--- 【文字與表格內容】 ---
+## 電腦系統的操作
+
+每一個DeviceController負責一個特定型態的装置。
+
+I/0devices和CPU可以同時执行並競争Memory。
+
+每一個DeviceController有自已的localbuffer（暫存器）
+
+在電腦系統中，發生一個事件時，通常是由硬體或軟體產生中斷（Interrupt)來通知。
+
+近代的作業系統是中断驅動(IntemuptDriven）式。
+
+--- 【萃取出的圖片檔案】 ---
+- slide_00003_img_in_image_box_212_367_817_665.jpg
+==================================================
+
+=== [Slide 4] 投影片文字與圖表提取 ===
+
+--- 【文字與表格內容】 ---
+## 中断（Interrupt)
+
+中斷 (Interrupt) 是電腦架構中一個重要的部份，每個電腦的設計均擁有自已的中斷技術。
+
+在0.S.Area內會存在：
+
+中断向量表 (Intemupt Vector)-0一組中斷服務程式(Intemrupt Service Routine; ISR)
+
+<html><body><table border="1"><tbody><tr><td rowspan="13">中斷向量表 中断服務程式</td><td>Interrupt ID</td><td>ISR的起始位址</td><td rowspan="3">0630</td></tr><tr><td>10h</td><td>ISR10h: 0630</td></tr><tr><td>…</td><td>…</td></tr><tr><td></td><td></td></tr><tr><td>ISR1</td><td>ISR2</td></tr><tr><td>…</td><td>ISRn</td></tr><tr><td></td><td></td></tr><tr><td></td><td></td></tr></tbody></table></body></html>
+
+--- 【萃取出的圖片檔案】 ---
+- slide_00004_img_in_table_box_457_136_936_534.jpg
+==================================================
+
+=== [Slide 5] 投影片文字與圖表提取 ===
+
+--- 【文字與表格內容】 ---
+## 中斷發生時的處理步驟
+
+0.S.要求系統(CPu)暫停目前Process的執行，同時保存其當時執行的狀態。
+
+根據Interrupt ID去查詢Interrupt Vector，以便可以找到相對應ISR之起始位址。
+
+Jumpto相對應的ISR之起始位址，系統執行ISR。
+
+ISR執行完畢，將控制權交回給0.S.。
+
+Resume原先中斷前的Process之執行(原則上)。
+==================================================
+
+=== [Slide 6] 投影片文字與圖表提取 ===
+
+--- 【文字與表格內容】 ---
+中斷發生時：
+被中断點的
+Application
+(ISR)
+Interrupt haler
+Data和Add.被
+push到 Stack中
+…
+Interrupt
+…
+Data: X
+Add.: A
+…
+Stack:
+中断返回時：
+被中断點的Data
+Data:X
+和Add.被pop回
+應用程式中
+Add.:A
+Operating System Concepts,7th Ed.
+國立聯合大學資訊管理學系陳士傑
+6
+2
+
+--- 【萃取出的圖片檔案】 ---
+- slide_00006_img_in_image_box_126_123_893_626.jpg
+==================================================
+
+=== [Slide 7] 投影片文字與圖表提取 ===
+
+--- 【文字與表格內容】 ---
+## 中斷的種類
+
+## External Interrupt 
+
+由CPU以外的调邊設備所引發。
+
+e.g. Machine Check, I/OComplete, Device Error.
+
+## Internal Interrupt 
+
+9由CPU本身所引發。
+
+·e.g.執行到illegal Instruction，Overflow，除0
+
+## Software Interrupt 
+
+當UserProcess於執行過程中，若需要O.s.提供服務時，則UserProcess會發出此中斷通知O.S.，提供所指定的Service，亦稱Trap（陷阱)。
+
+e.g.Overflow，除以oSystem Call.
+==================================================
+
+=== [Slide 8] 投影片文字與圖表提取 ===
+
+--- 【文字與表格內容】 ---
+#### Interrupt v.s.Trap 
+
+## Interrupt 
+
+Hardware-Generated Interrupt.
+
+• I/0 device發出“I/o Complete”中斷
+
+## Trap 
+
+Software-Generated Interrupt.
+
+UserProcess需要0.S.提供時會發出
+
+當有錯誤的數學運算(Arithmetic Errors)發生時(e.g.,除0)
+==================================================
+
